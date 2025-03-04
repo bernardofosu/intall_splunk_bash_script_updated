@@ -43,7 +43,6 @@ sudo usermod -a -G splunk atlgsdachedu
 sudo chage -M -1 atlgsdachedu
 
 echo "atlgsdachedu ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/atlgsdachedu
-
 echo "splunk ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/splunk
 
 # 7️⃣ Revert Default Shell to Sh
@@ -61,9 +60,7 @@ sudo sed -i 's/^#DefaultTasksMax=.*/DefaultTasksMax=80%/' /etc/systemd/system.co
 
 # 🔟 Disable Transparent Huge Pages (THP)
 echo 'never' | sudo tee /sys/kernel/mm/transparent_hugepage/enabled
-
 echo 'never' | sudo tee /sys/kernel/mm/transparent_hugepage/defrag
-
 grub2-editenv - set "$(grub2-editenv - list | grep kernelopts) transparent_hugepage=never"
 
 # 1️⃣1️⃣ Setup Splunk Directory
@@ -117,15 +114,8 @@ echo -e "[settings]\nstartwebserver = True\nenableSplunkWebSSL = True\nsslVersio
 sudo -u splunk $SPLUNK_HOME/bin/splunk start
 
 # 2️⃣5️⃣ Display Success Message
-# 2️⃣5️⃣ Display Success Message
 sudo apt install -y cowsay
 echo 'export PATH=$PATH:/usr/games' >> ~/.bashrc
 source ~/.bashrc
 /usr/games/cowsay -f tux "WoHoo..Welcome to ATLGSDACH EDU..You installed SPLUNK successfully"
 echo "done"
-
-# 🚫 Optional Cleanup and Removal Commands (Commented Out)
-## kill `ps -ef | grep splunkd | egrep -v grep | awk '{print $2}'`
-## rpm -qa | grep -i splunk
-## rpm -e <.rpm>
-## sudo pkill -f splunk
